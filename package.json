@@ -1,0 +1,15 @@
+{
+  "name": "aws-zoluxiones",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "aws-sdk": "^2.1120.0",
+    "axios": "^0.26.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "serverless-http": "^2.7.0",
+    "swagger-ui-express": "^4.3.0",
+    "uuid": "^8.3.2",
+    "yamljs": "^0.3.0"
+  }
+}

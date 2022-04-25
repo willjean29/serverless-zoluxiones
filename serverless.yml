@@ -1,0 +1,36 @@
+org: willjean29
+app: aws-zoluxiones
+service: aws-zoluxiones
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:338975015168:table/PeoplesTable
+
+functions:
+  api:
+    handler: src/handler.handler
+    events:
+      - httpApi: "*"
+
+resources:
+  Resources:
+    PeoplesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: PeoplesTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

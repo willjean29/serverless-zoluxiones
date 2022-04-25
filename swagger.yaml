@@ -1,0 +1,271 @@
+openapi: 3.0.2
+info:
+  title: Serverles Zoluxiones
+  description: Documentación Serverless Zoluxiones
+  version: "1.1"
+  contact:
+    name: Jean Osco
+    email: jean.osco@unmsm.edu.pe
+servers:
+  - url: https://3ctcvaq0ub.execute-api.us-east-1.amazonaws.com
+    description: PROD
+paths:
+  /people:
+    get:
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+            minimum: 1
+            default: 1
+          description: Tipo de consulta a realizar 1 -> Api Start Wars 2 -> DynamoDB
+      description: Listado de Personajes de Star Wars
+      tags:
+        - People
+      responses:
+        "200":
+          description: Respuesta OK consulta de personajes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resPeoples"
+        "404":
+          description: Personajes no encontrados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resNotFound"
+
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/reqAddPeople"
+      description: Agregar un personaje de start wars
+      tags:
+        - People
+      responses:
+        "200":
+          description: Respuesta OK consulta de agregar personaje
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resPeoples"
+        "400":
+          description: Personajes no guardado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resNotFound"
+
+  /people/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            minimum: 1
+          description: Id del personaje a buscar
+        - in: query
+          name: type
+          schema:
+            type: string
+            minimum: 1
+            default: 1
+          description: Tipo de consulta a realizar 1 -> Api Start Wars 2 -> DynamoDB
+      description: Personaje por Id
+      tags:
+        - People
+      responses:
+        "200":
+          description: Respuesta OK consulta de personaje por id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resPeopleId"
+        "404":
+          description: Personaje no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/resNotFound"
+
+components:
+  schemas:
+    resPeoples:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        peoples:
+          type: array
+          items:
+            type: object
+            properties:
+              nombre:
+                type: string
+                example: "Luke Skywalker"
+              altura:
+                type: string
+                example: "172"
+              peso:
+                type: string
+                example: "77"
+              cabello_color:
+                type: string
+                example: "blond"
+              piel_color:
+                type: string
+                example: "fair"
+              ojos_color:
+                type: string
+                example: "blue"
+              nacimiento:
+                type: string
+                example: "19BBY"
+              genero:
+                type: string
+                example: "male"
+              mundo_natal:
+                type: string
+                example: "https://swapi.py4e.com/api/planets/1"
+              peliculas:
+                type: array
+                items:
+                  type: string
+                  example: "https://swapi.py4e.com/api/films/1/"
+              especies:
+                type: array
+                items:
+                  type: string
+                  example: "https://swapi.py4e.com/api/species/1"
+              vehiculos:
+                type: array
+                items:
+                  type: string
+                  example: "https://swapi.py4e.com/api/vehicles/14/"
+              naves_estelares:
+                type: array
+                items:
+                  type: string
+                  example: "https://swapi.py4e.com/api/starships/12/"
+              creado:
+                type: string
+                example: "2014-12-09T13:50:51.644000Z"
+              editado:
+                type: string
+                example: "2014-12-09T13:50:51.644000Z"
+              url:
+                type: string
+                example: "https://swapi.py4e.com/api/people/1/"
+
+    resPeopleId:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        people:
+          type: object
+          properties:
+            nombre:
+              type: string
+              example: "Luke Skywalker"
+            altura:
+              type: string
+              example: "172"
+            peso:
+              type: string
+              example: "77"
+            cabello_color:
+              type: string
+              example: "blond"
+            piel_color:
+              type: string
+              example: "fair"
+            ojos_color:
+              type: string
+              example: "blue"
+            nacimiento:
+              type: string
+              example: "19BBY"
+            genero:
+              type: string
+              example: "male"
+            mundo_natal:
+              type: string
+              example: "https://swapi.py4e.com/api/planets/1"
+            peliculas:
+              type: array
+              items:
+                type: string
+                example: "https://swapi.py4e.com/api/films/1/"
+            especies:
+              type: array
+              items:
+                type: string
+                example: "https://swapi.py4e.com/api/species/1"
+            vehiculos:
+              type: array
+              items:
+                type: string
+                example: "https://swapi.py4e.com/api/vehicles/14/"
+            naves_estelares:
+              type: array
+              items:
+                type: string
+                example: "https://swapi.py4e.com/api/starships/12/"
+            creado:
+              type: string
+              example: "2014-12-09T13:50:51.644000Z"
+            editado:
+              type: string
+              example: "2014-12-09T13:50:51.644000Z"
+            url:
+              type: string
+              example: "https://swapi.py4e.com/api/people/1/"
+
+    resNotFound:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "Data not found"
+
+    reqAddPeople:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: "Luke Skywalker"
+        altura:
+          type: string
+          example: "172"
+        peso:
+          type: string
+          example: "77"
+        cabello_color:
+          type: string
+          example: "blond"
+        piel_color:
+          type: string
+          example: "fair"
+        ojos_color:
+          type: string
+          example: "blue"
+        nacimiento:
+          type: string
+          example: "19BBY"
+        genero:
+          type: string
+          example: "male"
